@@ -1,0 +1,9 @@
+ichiran-api.lacchinh.com {
+    reverse_proxy api:8000
+
+    header {
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type"
+    }
+}
