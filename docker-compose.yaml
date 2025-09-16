@@ -23,7 +23,7 @@ services:
       PGHOST: pg
       PGUSER: postgres
       PGPASSWORD: password
-      PGDATABASE: ichiran
+      PGDATABASE: jmdict
     depends_on:
       - pg
     restart: unless-stopped

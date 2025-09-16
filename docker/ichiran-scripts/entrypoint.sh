@@ -9,7 +9,7 @@ log() {
 PGHOST="${PGHOST:-pg}"
 PGUSER="${PGUSER:-postgres}"
 PGPASSWORD="${PGPASSWORD:-password}"
-PGDATABASE="${PGDATABASE:-postgres}"
+PGDATABASE="${PGDATABASE:-jmdict}"
 export PGPASSWORD
 
 log "Checking postgres server status..."
