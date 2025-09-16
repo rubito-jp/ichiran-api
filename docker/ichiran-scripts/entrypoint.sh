@@ -17,10 +17,13 @@ done
 log "Postgres is ready, starting main container init."
 init-all
 
-log "Copying ichiran-cli into shared volume."
+log "Copying ichiran-cli artifacts into shared volume."
 mkdir -p /ichiran-bin
 cp -f /root/quicklisp/local-projects/ichiran/ichiran-cli /ichiran-bin/ichiran-cli
 chmod +x /ichiran-bin/ichiran-cli
+if [ -f /root/quicklisp/local-projects/ichiran/ichiran-cli.core ]; then
+    cp -f /root/quicklisp/local-projects/ichiran/ichiran-cli.core /ichiran-bin/ichiran-cli.core
+fi
 
 log "All set, awaiting commands."
 sleep infinity

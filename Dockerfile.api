@@ -10,4 +10,4 @@ RUN pip install --no-cache-dir fastapi uvicorn
 EXPOSE 8000
 
 # Run the API after the CLI becomes available
-CMD ["bash", "-c", "until [ -x /ichiran-bin/ichiran-cli ]; do echo 'Waiting for ichiran-cli...'; sleep 2; done; exec uvicorn main:app --host 0.0.0.0 --port 8000"]
+CMD ["bash", "-c", "until [ -x /ichiran-bin/ichiran-cli ] && [ -f /ichiran-bin/ichiran-cli.core ]; do echo 'Waiting for ichiran-cli...'; sleep 2; done; exec uvicorn main:app --host 0.0.0.0 --port 8000"]
