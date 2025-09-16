@@ -30,6 +30,8 @@ services:
     container_name: ichiran-api
     volumes:
       - ichiran-bin:/ichiran-bin
+    ports:
+      - "127.0.0.1:8000:8000"
     expose:
       - "8000"
     depends_on:
