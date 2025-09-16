@@ -6,9 +6,15 @@ log() {
     printf '%s\n' "$1"
 }
 
+PGHOST="${PGHOST:-pg}"
+PGUSER="${PGUSER:-postgres}"
+PGPASSWORD="${PGPASSWORD:-password}"
+PGDATABASE="${PGDATABASE:-postgres}"
+export PGPASSWORD
+
 log "Checking postgres server status..."
 while : ; do
-    if pg_isready -h pg > /dev/null 2>&1; then
+    if pg_isready -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" > /dev/null 2>&1; then
         break
     fi
     sleep 1

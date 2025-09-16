@@ -19,6 +19,11 @@ services:
     container_name: ichiran-main
     volumes:
       - ichiran-bin:/ichiran-bin
+    environment:
+      PGHOST: pg
+      PGUSER: postgres
+      PGPASSWORD: password
+      PGDATABASE: ichiran
     depends_on:
       - pg
     restart: unless-stopped
