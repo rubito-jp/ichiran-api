@@ -1,30 +1,32 @@
 services:
   pg:
     build:
-      dockerfile: ./docker/postgres-dockerfile
       context: .
+      dockerfile: ./docker/postgres-dockerfile
       args:
         ICHIRAN_DB_URL: "https://github.com/tshatrov/ichiran/releases/download/ichiran-250113/ichiran-250113.pgdump"
     environment:
-      POSTGRES_PASSWORD: "password"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./docker/pgdata:/var/lib/postgresql/data
 
   main:
     build:
-      dockerfile: ./docker/sbcl-dockerfile
       context: .
+      dockerfile: ./docker/sbcl-dockerfile
     container_name: ichiran-main
     volumes:
       - ichiran-bin:/ichiran-bin
     command: >
-      sh -c "/ichiran-cli && cp ichiran-cli /ichiran-bin/ && tail -f /dev/null"
+      sh -c "cp ichiran-cli /ichiran-bin/ && echo 'All set, awaiting commands.' && tail -f /dev/null"
+    depends_on:
+      - pg
 
   api:
     build:
-      dockerfile: ./Dockerfile.api
       context: .
+      dockerfile: ./Dockerfile.api
     container_name: ichiran-api
     volumes:
       - ichiran-bin:/ichiran-bin
@@ -34,9 +36,9 @@ services:
       - main
       - pg
 
-
   caddy:
     image: caddy:latest
+    container_name: ichiran-caddy
     ports:
       - "80:80"
       - "443:443"
