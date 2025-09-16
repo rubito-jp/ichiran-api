@@ -26,6 +26,9 @@ init-all
 log "Copying ichiran-cli artifacts into shared volume."
 mkdir -p /ichiran-bin
 cp -f /root/quicklisp/local-projects/ichiran/ichiran-cli /ichiran-bin/ichiran-cli
+log "Syncing jmdictdb data into shared volume."
+rm -rf /ichiran-bin/jmdictdb
+cp -a /root/jmdictdb /ichiran-bin/
 chmod +x /ichiran-bin/ichiran-cli
 if [ -f /root/quicklisp/local-projects/ichiran/ichiran-cli.core ]; then
     cp -f /root/quicklisp/local-projects/ichiran/ichiran-cli.core /ichiran-bin/ichiran-cli.core

@@ -5,9 +5,10 @@ COPY ./api /app
 
 # Install FastAPI + Uvicorn
 RUN pip install --no-cache-dir fastapi uvicorn
+RUN chmod +x /app/entrypoint.sh
 
 # Expose port internally for other services
 EXPOSE 8000
 
-# Run the API after the CLI becomes available
-CMD ["bash", "-c", "until [ -x /ichiran-bin/ichiran-cli ]; do echo 'Waiting for ichiran-cli...'; sleep 2; done; exec uvicorn main:app --host 0.0.0.0 --port 8000"]
+# Run the API after the CLI and data become available
+CMD ["/app/entrypoint.sh"]
