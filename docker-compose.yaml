@@ -10,6 +10,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./docker/pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
 
   main:
     build:
@@ -18,10 +19,9 @@ services:
     container_name: ichiran-main
     volumes:
       - ichiran-bin:/ichiran-bin
-    command: >
-      sh -c "cp ichiran-cli /ichiran-bin/ && echo 'All set, awaiting commands.' && tail -f /dev/null"
     depends_on:
       - pg
+    restart: unless-stopped
 
   api:
     build:
@@ -30,11 +30,12 @@ services:
     container_name: ichiran-api
     volumes:
       - ichiran-bin:/ichiran-bin
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - main
       - pg
+    restart: unless-stopped
 
   caddy:
     image: caddy:latest
@@ -44,8 +45,13 @@ services:
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy-data:/data
+      - caddy-config:/config
     depends_on:
       - api
+    restart: unless-stopped
 
 volumes:
   ichiran-bin:
+  caddy-data:
+  caddy-config:
