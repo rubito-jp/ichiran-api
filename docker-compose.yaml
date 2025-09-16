@@ -19,7 +19,7 @@ services:
     volumes:
       - ichiran-bin:/ichiran-bin
     command: >
-      sh -c "make && cp ichiran-cli /ichiran-bin/ && tail -f /dev/null"
+      sh -c "/ichiran-cli && cp ichiran-cli /ichiran-bin/ && tail -f /dev/null"
 
   api:
     build:
