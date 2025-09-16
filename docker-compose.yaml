@@ -18,9 +18,8 @@ services:
     container_name: ichiran-main
     volumes:
       - ichiran-bin:/ichiran-bin
-    # keep container running even if ichiran-cli missing
     command: >
-      sh -c "cp ichiran-cli /ichiran-bin/ 2>/dev/null || true && tail -f /dev/null"
+      sh -c "cp /ichiran-cli /ichiran-bin/ 2>/dev/null || true && tail -f /dev/null"
 
   api:
     build:
@@ -34,6 +33,7 @@ services:
     depends_on:
       - main
       - pg
+
 
   caddy:
     image: caddy:latest
