@@ -9,8 +9,7 @@ services:
       POSTGRES_PASSWORD: "password"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    restart: unless-stopped
+      - ./docker/pgdata:/var/lib/postgresql/data
 
   main:
     build:
@@ -19,9 +18,9 @@ services:
     container_name: ichiran-main
     volumes:
       - ichiran-bin:/ichiran-bin
+    # keep container running even if ichiran-cli missing
     command: >
-      sh -c "/ichiran-cli && cp ichiran-cli /ichiran-bin/ && tail -f /dev/null"
-    restart: unless-stopped
+      sh -c "cp ichiran-cli /ichiran-bin/ 2>/dev/null || true && tail -f /dev/null"
 
   api:
     build:
@@ -31,28 +30,20 @@ services:
     volumes:
       - ichiran-bin:/ichiran-bin
     ports:
-      - "8000:8000"  # only needed internally if you want to test on VPS
+      - "8000:8000"
     depends_on:
       - main
       - pg
-    restart: unless-stopped
 
   caddy:
     image: caddy:latest
-    container_name: caddy
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
     depends_on:
       - api
-    restart: unless-stopped
 
 volumes:
   ichiran-bin:
-  pgdata:
-  caddy_data:
-  caddy_config:
